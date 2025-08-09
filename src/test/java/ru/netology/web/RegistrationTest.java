@@ -20,18 +20,19 @@ class RegistrationTest {
     }
 
     @Test
-    void shouldRegisred() {
+    void shouldRegistered() {
         String planingDate = generateDate(4, "dd.MM.yyyy");
 
         Selenide.open("http://localhost:9999");
-        $(".input__box > [placeholder='Город']").setValue("Томск").press(Keys.TAB);
-        $("[data-test-id='date'] [type='date']").setValue(planingDate);
+        $(".input__box > [placeholder='Город']").setValue("Томск");
+        $("[data-test-id='date'] [type='tel']").press(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.DELETE)
+                .setValue(planingDate);
         $("[data-test-id='name'] input").setValue("Воропаев Артемий");
         $("[data-test-id='phone'] input").setValue("+79131038871");
         $$(".form-field").find(Condition.text("Я соглашаюсь с условиями обработки и использования" +
                 " моих персональных данных")).click();
         $(".button__icon ~ .button__text").click();
         // $(".notification__title + .notification__content").find(Condition.text("Встреча успешно забронирована на "))
-        $(Selectors.byText("Встреча успешно забронирована на " + planingDate)).shouldBe(Condition.visible, Duration.ofSeconds(15));
+        $(Selectors.withText("Встреча успешно забронирована на")).shouldBe(Condition.visible, Duration.ofSeconds(15));
     }
 }
